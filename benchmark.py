@@ -95,7 +95,11 @@ def summarise(rows):
 
 if __name__ == "__main__":
     models = sys.argv[1:] or ["openai/gpt-oss-120b", "openai/gpt-oss-20b"]
-    key = os.environ["GROQ_API_KEY"]
+    key = os.environ.get("GROQ_API_KEY")
+    if not key:  # fall back to the same file the app uses
+        import tomllib
+        with open(".streamlit/secrets.toml", "rb") as f:
+            key = tomllib.load(f)["GROQ_API_KEY"]
     rows = run(models, lambda m: make_groq_caller(key, m))
     with open("results.csv", "w", newline="") as f:
         w = csv.DictWriter(f, fieldnames=list(rows[0]))
