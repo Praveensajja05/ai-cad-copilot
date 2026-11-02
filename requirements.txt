@@ -1,0 +1,8 @@
+streamlit
+plotly
+trimesh
+manifold3d
+numpy
+pydantic>=2
+groq
+pytest
